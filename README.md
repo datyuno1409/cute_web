@@ -2,7 +2,7 @@
 
 A beautiful, interactive web application created as a special gift for Women's Day.
 
-## 💖 Created by [caigicungdev](https://github.com/caigicungdev)
+## 💖 Modifiled by [callmeserein](https://github.com/datyuno1409)
 
 ## 🌟 Features
 
@@ -46,14 +46,10 @@ npm start
 ## 🌐 Deployment
 This application can be easily deployed to platforms like:
 
-- GitHub Pages
-- Netlify
-- Vercel
-- Firebase Hosting
 ## 💡 Customization
 You can customize the messages by editing the messages array in the MessageCard.js file.
 
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Made with ❤️ by caigicungdev# cute_web
+## 💖 Created by [caigicungdev](https://github.com/caigicungdev)
