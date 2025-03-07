@@ -9,19 +9,19 @@ const BackgroundMusic = ({ src }) => {
     audio.loop = true;
     audio.volume = 0.5;
     
+    // Định nghĩa playOnTouch trước khi sử dụng
+    const playOnTouch = async () => {
+      try {
+        await audio.play();
+        setPlaying(true);
+        document.removeEventListener('touchstart', playOnTouch);
+      } catch (error) {
+        console.log("Playback prevented");
+      }
+    };
+
     const attemptPlay = async () => {
       try {
-        // Thêm sự kiện touch để phát nhạc trên mobile
-        const playOnTouch = async () => {
-          try {
-            await audio.play();
-            setPlaying(true);
-            document.removeEventListener('touchstart', playOnTouch);
-          } catch (error) {
-            console.log("Playback prevented");
-          }
-        };
-
         // Thử phát nhạc ngay lập tức
         await audio.play();
         setPlaying(true);
@@ -36,7 +36,7 @@ const BackgroundMusic = ({ src }) => {
     return () => {
       audio.pause();
       audio.currentTime = 0;
-      document.removeEventListener('touchstart', () => {});
+      document.removeEventListener('touchstart', playOnTouch);
     };
   }, [audio]);
 
