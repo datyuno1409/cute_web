@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation, useDragControls } from 'framer-motion';
 
 const AlbumOverlay = styled(motion.div)`
   position: fixed;
@@ -30,6 +30,16 @@ const PhotoFrame = styled(motion.div)`
     height: auto;
     display: block;
   }
+  
+  @media (max-width: 768px) {
+    flex: 0 0 100%;
+    margin: 0;
+    img {
+      width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+  }
 `;
 
 const PhotoGroup = styled(motion.div)`
@@ -38,9 +48,12 @@ const PhotoGroup = styled(motion.div)`
   align-items: center;
   gap: 20px;
   margin: 20px 0;
+  width: 100%;
   
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: row;
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
   }
 `;
 
@@ -99,6 +112,13 @@ const VideoContainer = styled(motion.div)`
   video {
     width: 100%;
     height: auto;
+    outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+    background: transparent;
+    box-shadow: none;
   }
 `;
 
@@ -115,6 +135,21 @@ const FinalMessage = styled(motion.div)`
   
   @media (max-width: 480px) {
     font-size: 3rem;
+  }
+`;
+
+const SwipeIndicator = styled(motion.div)`
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
   }
 `;
 
@@ -210,6 +245,33 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
     };
   }, []);
 
+  const controls = useAnimation();
+  const dragControls = useDragControls();
+
+  const handleDragEnd = (event, info) => {
+    if (info.offset.x > 100) {
+      prevGroup();
+    } else if (info.offset.x < -100) {
+      nextGroup();
+    }
+  };
+
+  const VideoRef = useRef(null);
+
+  useEffect(() => {
+    if (currentView === 'video' && VideoRef.current) {
+      // Cố gắng tự động phát video
+      const playVideo = async () => {
+        try {
+          await VideoRef.current.play();
+        } catch (error) {
+          console.log("Autoplay prevented");
+        }
+      };
+      playVideo();
+    }
+  }, [currentView]);
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -249,10 +311,18 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
                 transition={{ duration: 0.5 }}
               >
                 <video
+                  ref={VideoRef}
                   src={video.url}
                   poster={video.thumbnail}
                   controls
+                  playsInline
+                  muted
                   autoPlay
+                  onTouchStart={() => {
+                    if (VideoRef.current) {
+                      VideoRef.current.play().catch(() => {});
+                    }
+                  }}
                 />
               </VideoContainer>
             )}
@@ -260,10 +330,15 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
             {currentView === 'photos' && (
               <PhotoGroup
                 key={`photos-${currentGroup}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, x: 0 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
+                drag="x"
+                dragControls={dragControls}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
               >
                 {groupedPhotos[currentGroup].map((item, index) => (
                   <PhotoFrame
@@ -303,6 +378,16 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
               </FinalMessage>
             )}
           </AnimatePresence>
+
+          {currentView === 'photos' && (
+            <SwipeIndicator
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+            >
+              Vuốt qua lại để xem ảnh
+            </SwipeIndicator>
+          )}
         </AlbumOverlay>
       )}
     </AnimatePresence>

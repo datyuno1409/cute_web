@@ -64,7 +64,7 @@ const Message = styled(motion.p)`
   line-height: 1.7;
   color: #333;
   margin-bottom: 25px;
-  font-family: 'Comic Sans MS', 'Bubblegum Sans', 'Indie Flower', cursive;
+  font-family: 'Quicksand', 'Montserrat', sans-serif;
   text-align: center;
   position: relative;
   
@@ -75,7 +75,9 @@ const Message = styled(motion.p)`
   }
   
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    padding: 0 15px;
   }
 `;
 
