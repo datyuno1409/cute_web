@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -188,14 +188,6 @@ const messages = [
     "Anh trân trọng từng khoảnh khắc chúng ta bên nhau, và anh mong muốn tạo ra nhiều kỷ niệm đẹp hơn nữa.",
     { text: "Nhân Ngày 8/3 này, tình yêu của anh! Em xứng đáng có được tất cả hạnh phúc trên thế giới này. Thành Đạt ❤️ Mỹ Khanh", isFinish: true }
 ];
-public/
-  ├── images/
-  │   ├── 1.jpg
-  │   ├── 2.jpg
-  │   └── video1-thumbnail.jpg
-  └── videos/
-      └── video1.mp4
-// Then update the MessageCard component to accept and pass the prop:
 
 const FullscreenOverlay = styled(motion.div)`
   position: fixed;
@@ -248,12 +240,10 @@ const MessageDecoration = styled(motion.div)`
   pointer-events: none;
 `;
 
-
-
 const MessageCard = ({ marginBottom, onFinish }) => {
     const [currentMessage, setCurrentMessage] = useState(0);
     const [floatingHearts, setFloatingHearts] = useState([]);
-    const [showFinalEffect, setShowFinalEffect] = useState(false);
+    const [showFinalEffect] = useState(false);
 
     const nextMessage = () => {
         // If we're on the last message and click "View Our Album"

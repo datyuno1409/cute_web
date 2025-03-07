@@ -2,6 +2,7 @@
   "name": "cute_web",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@react-three/drei": "^10.0.4",
     "@react-three/fiber": "^9.0.4",
@@ -11,8 +12,8 @@
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^12.4.10",
     "gsap": "^3.12.7",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.15",
     "three": "^0.174.0",
@@ -20,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set \"CI=false\" && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

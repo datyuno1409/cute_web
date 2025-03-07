@@ -272,7 +272,7 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
                     whileHover={{ scale: 1.05, rotation: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <img src={item.url} alt={`Photo ${index + 1}`} />
+                    <img src={item.url} alt={`${index + 1}`} />
                   </PhotoFrame>
                 ))}
               </PhotoGroup>

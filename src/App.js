@@ -176,16 +176,16 @@ function App() {
   const media = [
     {
       type: 'video',
-      url: '/videos/video1.mp4',
-      thumbnail: '/images/video1-thumbnail.jpg'
+      url: './videos/video1.mp4',
+      thumbnail: './images/video1-thumbnail.jpg'
     },
     {
       type: 'image',
-      url: '/images/1.jpg'
+      url: './images/1.jpg'
     },
     {
       type: 'image',
-      url: '/images/2.jpg'
+      url: './images/2.jpg'
     },
     {
       type: 'image',
@@ -264,7 +264,7 @@ function App() {
         {/* <PuppyFrame /> */}
         <model-viewer
           ref={modelViewerRef}
-          src="/toon_cute_dog.glb"
+          src="./toon_cute_dog.glb"
           alt="A cute cartoon dog"
           auto-rotate
           camera-controls
