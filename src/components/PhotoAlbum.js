@@ -15,6 +15,12 @@ const AlbumOverlay = styled(motion.div)`
   align-items: center;
   justify-content: center;
   padding: 20px;
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+    justify-content: flex-start;
+    padding-top: 50px;
+  }
 `;
 
 const PhotoFrame = styled(motion.div)`
@@ -32,11 +38,13 @@ const PhotoFrame = styled(motion.div)`
   }
   
   @media (max-width: 768px) {
-    flex: 0 0 100%;
     margin: 0;
+    padding: 10px;
+    width: 90%;
+    
     img {
       width: 100%;
-      max-height: 70vh;
+      max-height: 40vh;
       object-fit: contain;
     }
   }
@@ -51,9 +59,11 @@ const PhotoGroup = styled(motion.div)`
   width: 100%;
   
   @media (max-width: 768px) {
-    flex-direction: row;
-    overflow: hidden;
-    touch-action: pan-y pinch-zoom;
+    flex-direction: column;
+    gap: 10px;
+    height: 70vh;
+    overflow-y: auto;
+    padding: 10px;
   }
 `;
 
@@ -74,12 +84,18 @@ const NavigationButton = styled.button`
   font-size: 24px;
   z-index: 1001;
   
-  &.prev {
-    left: 20px;
-  }
-  
-  &.next {
-    right: 20px;
+  @media (max-width: 768px) {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    
+    &.prev {
+      left: 10px;
+    }
+    
+    &.next {
+      right: 10px;
+    }
   }
 `;
 
@@ -99,6 +115,14 @@ const CloseButton = styled(motion.button)`
   color: white;
   font-size: 24px;
   z-index: 1001;
+  
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
 `;
 
 const VideoContainer = styled(motion.div)`
@@ -138,7 +162,7 @@ const FinalMessage = styled(motion.div)`
   }
 `;
 
-const SwipeIndicator = styled(motion.div)`
+const PhotoIndicator = styled(motion.div)`
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -328,29 +352,30 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
             )}
 
             {currentView === 'photos' && (
-              <PhotoGroup
-                key={`photos-${currentGroup}`}
-                initial={{ opacity: 0, x: 0 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                drag="x"
-                dragControls={dragControls}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragEnd={handleDragEnd}
-              >
-                {groupedPhotos[currentGroup].map((item, index) => (
-                  <PhotoFrame
-                    key={index}
-                    rotation={Math.random() * 6 - 3}
-                    whileHover={{ scale: 1.05, rotation: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img src={item.url} alt={`${index + 1}`} />
-                  </PhotoFrame>
-                ))}
-              </PhotoGroup>
+              <>
+                <PhotoGroup
+                  key={`photos-${currentGroup}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {groupedPhotos[currentGroup].map((item, index) => (
+                    <PhotoFrame
+                      key={index}
+                      rotation={Math.random() * 6 - 3}
+                      whileHover={{ scale: 1.05, rotation: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img src={item.url} alt={`${index + 1}`} />
+                    </PhotoFrame>
+                  ))}
+                </PhotoGroup>
+                
+                <PhotoIndicator>
+                  Cuộn xuống để xem thêm ảnh
+                </PhotoIndicator>
+              </>
             )}
 
             {currentView === 'final' && (
@@ -378,16 +403,6 @@ const PhotoAlbum = ({ isVisible, onClose, media }) => {
               </FinalMessage>
             )}
           </AnimatePresence>
-
-          {currentView === 'photos' && (
-            <SwipeIndicator
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              Vuốt qua lại để xem ảnh
-            </SwipeIndicator>
-          )}
         </AlbumOverlay>
       )}
     </AnimatePresence>

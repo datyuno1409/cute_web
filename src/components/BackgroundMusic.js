@@ -9,41 +9,34 @@ const BackgroundMusic = ({ src }) => {
     audio.loop = true;
     audio.volume = 0.5;
     
-    const attemptAutoplay = async () => {
-      if (!hasAttemptedAutoplay.current) {
-        hasAttemptedAutoplay.current = true;
-        try {
-          await audio.play();
-          setPlaying(true);
-          console.log("Autoplay successful");
-        } catch (error) {
-          console.log("Autoplay prevented by browser, waiting for interaction");
-          
-          const startAudioOnInteraction = () => {
-            audio.play()
-              .then(() => {
-                setPlaying(true);
-                ['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-                  document.removeEventListener(event, startAudioOnInteraction);
-                });
-              });
-          };
-          
-          ['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-            document.addEventListener(event, startAudioOnInteraction);
-          });
-        }
+    const attemptPlay = async () => {
+      try {
+        // Thêm sự kiện touch để phát nhạc trên mobile
+        const playOnTouch = async () => {
+          try {
+            await audio.play();
+            setPlaying(true);
+            document.removeEventListener('touchstart', playOnTouch);
+          } catch (error) {
+            console.log("Playback prevented");
+          }
+        };
+
+        // Thử phát nhạc ngay lập tức
+        await audio.play();
+        setPlaying(true);
+      } catch (error) {
+        // Nếu không thể phát tự động, đăng ký sự kiện touch
+        document.addEventListener('touchstart', playOnTouch);
       }
     };
     
-    attemptAutoplay();
+    attemptPlay();
 
     return () => {
       audio.pause();
       audio.currentTime = 0;
-      ['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-        document.removeEventListener(event, () => {});
-      });
+      document.removeEventListener('touchstart', () => {});
     };
   }, [audio]);
 
@@ -71,7 +64,9 @@ const BackgroundMusic = ({ src }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          padding: '10px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
         }}
       >
         {playing ? '🔇' : '🔊'}

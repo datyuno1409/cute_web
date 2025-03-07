@@ -50,6 +50,11 @@ const CardContainer = styled(motion.div)`
     opacity: 0.6;
     filter: blur(10px);
   }
+
+  @media (max-width: 768px) {
+    padding: 25px 20px 15px 20px;
+    margin-bottom: 50px;
+  }
 `;
 
 const MessageWrapper = styled(motion.div)`
@@ -85,6 +90,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
+  margin-bottom: 20px;
   
   &:before {
     content: '';
@@ -95,6 +101,11 @@ const ButtonContainer = styled.div`
     width: 80%;
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(255,105,180,0.5), transparent);
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+    margin-top: 20px;
   }
 `;
 
