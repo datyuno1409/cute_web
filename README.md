@@ -40,6 +40,10 @@ npm install
 
 ```bash
 npm start
+```
+Or
+```
+npm run build
  ```
 5. Open your browser and visit http://localhost:3000# cute_web
 
