@@ -24,7 +24,7 @@ A beautiful, interactive web application created as a special gift for Women's D
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/caigicungdev/cute_web.git
+   git clone https://github.com/datyuno1409/cute_web.git
 ```
 2. Navigate to the project directory
 
