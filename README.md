@@ -41,7 +41,7 @@ npm install
 ```bash
 npm start
 ```
-Or
+   or
 ```
 npm run build
  ```
